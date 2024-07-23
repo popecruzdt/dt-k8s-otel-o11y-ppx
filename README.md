@@ -5,23 +5,23 @@ author: Tony Pope-Cruz
 # OpenTelemetry Collector Log Processing with Dynatrace OpenPipeline
 <!-- ------------------------ -->
 ## Overview 
-Total Duration: 30
+Total Duration: 30 minutes
 
 ### What You’ll Learn Today
 In this lab we'll utilize Dynatrace OpenPipeline to process OpenTelemetry Collector internal telemetry logs at ingest, in order to make them easier to analyze and leverage.  The OpenTelemetry Collector logs will be ingested by the OpenTelemetry Collector, deployed as a Daemonset in a previous lab.  The OpenTelemetry Collector logs are output mixed JSON/console format, making them difficult to use by default.  With OpenPipeline, the logs will be processed at ingest, to manipulate fields, extract metrics, and raise alert events in case of any issues.
 
 Lab tasks:
 1. Ingest OpenTelemetry Collector internal telemetry logs using OpenTelemetry Collector
-2. Parse OpenTelemetry Collector logs using DQL in a Notebook
-3. Parse OpenTelemetry Collector logs at ingest using Dynatrace OpenPipeline
-4. Query and visualize logs in Dynatrace using DQL
+2. Parse OpenTelemetry Collector logs using DQL in a Notebook, giving you flexibility at query time
+3. Parse OpenTelemetry Collector logs at ingest using Dynatrace OpenPipeline, giving you simplicity at query time
+4. Query and visualize logs and metrics in Dynatrace using DQL
 5. Update the OpenTelemetry Collector self-monitoring dashboard to use the new results
 
-TODO Screenshot
+![openpipeline](img/dt_openpipeline_mrkt_header.png)
 
 <!-- -------------------------->
 ## Technical Specification 
-Duration: 2
+Duration: 2 minutes
 
 #### Technologies Used
 - [Dynatrace](https://www.dynatrace.com/trial)
@@ -45,7 +45,7 @@ TODO
 
 <!-- -------------------------->
 ## Setup
-Duration: 18
+Duration: 28 minutes
 
 ### Prerequisites
 
@@ -54,15 +54,20 @@ https://github.com/popecruzdt/dt-k8s-otel-o11y-cluster\
 https://github.com/popecruzdt/dt-k8s-otel-o11y-cap
 
 #### Import Notebook into Dynatrace
-[notebook](/dt-k8s-otel-o11y-logs_dt_notebook.json)
+[notebook](/dt-k8s-otel-o11y-ppx_dt_notebook.json)
+![notebook](img/dt_otc_logs_notebook.png)
 
 #### Import Dashboard into Dynatrace
+[dashboard](/OpenTelemetry_Collector_[IsItObservable]_-_OpenPipeline_dt_dashboard.json)
+![dashboard](img/dt_otc_logs_dashboard.png)
 
 ### OpenTelemetry Collector Logs - Ondemand Processing at Query Time (Notebook)
 
 #### OpenTelemetry Collector Logs
 
 The OpenTelemetry Collector can be configured to output JSON structured logs as internal telemetry.  Dynatrace DQL can be used to filter, process, and analyze this log data to ensure reliability of the OpenTelemetry data pipeline.
+
+By default, OpenTelemetry Collector logs are output mixed JSON/console format, making them difficult to use.
 
 #### Goals:
 * Parse JSON content
@@ -731,7 +736,8 @@ Result:\
 
 ### Update OpenTelemetry Collector Dashboard
 
-TODO
+Open the new Dynatrace Dashboard that leverages the OpenPipeline processing.  Inspect the chart `Number of records dropped by OTLP ingest API` which previously queried the raw log data and now uses the new metric `log.otelcol_exporter_dropped_data_points_by_data_type` that was extracted during data ingest.
+![dashboard query](img/dt_otc_logs_dashboard_details.png)
 
 <!-- ------------------------ -->
 ## Demo The New Functionality
@@ -742,15 +748,19 @@ TODO
 
 ### What You Learned Today 
 By completing this lab, you've successfully set up a Dynatrace OpenPipeline pipeline to process the OpenTelemetry Collector logs at ingest.
-- The OpenTelemetry Collector was deployed as a DaemonSet, behaving as an Agent running on each Node
-- The Dynatrace Distro of OpenTelemetry Collector includes supported modules needed to ship logs to Dynatrace
-  - The `filelog` receiver scrapes logs from the Node filesystem and parses the contents
-  - The `k8sattributes` processor enriches the logs with Kubernetes attributes
-  - The `resourcedetection` processor enriches the logs with cloud and cluster (GCP/GKE) attributes
-  - The `resource` processor enriches the logs with custom (resource) attributes
-- The Community Contrib Distro of OpenTelemetry Collector includes modules needed to ship events to Dynatrace
-  - The `k8sobjects` receiver watches for Kubernetes events (and other resources) on the cluster
-- Dynatrace DQL (via Notebooks) allows you to perform powerful queries and analysis of the log data
+- Ingest OpenTelemetry Collector internal telemetry logs using OpenTelemetry Collector
+- Parse OpenTelemetry Collector logs using DQL in a Notebook, giving you flexibility at query time
+    - Parse JSON structured content for usability
+    - Modify loglevel and status fields
+    - Remove unwanted fields
+    - Extract metric data points
+    - Identify alert scenarios
+- Parse OpenTelemetry Collector logs at ingest using Dynatrace OpenPipeline, giving you simplicity at query time
+    - Processing rules to parse and modify log attributes
+    - Metric extraction to generate timeseries data
+    - Event extraction to generate alerts for unexpected behaviors
+- Query and visualize logs and metrics in Dynatrace using DQL
+- Update the OpenTelemetry Collector self-monitoring dashboard to use the new results
 
 <!-- ------------------------ -->
 ### Supplemental Material
