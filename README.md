@@ -50,7 +50,8 @@ Duration: 28 minutes
 ### Prerequisites
 
 #### Deploy GKE cluster & demo assets
-https://github.com/popecruzdt/dt-k8s-otel-o11y-cluster\
+https://github.com/popecruzdt/dt-k8s-otel-o11y-cluster
+
 https://github.com/popecruzdt/dt-k8s-otel-o11y-cap
 
 #### Import Notebook into Dynatrace
